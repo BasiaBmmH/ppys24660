@@ -11,7 +11,7 @@ class GameSettingsScreen(ctk.CTkFrame):
         self.pack(expand=True, fill="both")
 
         self.mode_var = ctk.StringVar(value="classic")
-        self.time_var = ctk.StringVar(value="30")
+        self.time_var = ctk.StringVar(value="30")  # Default to 30s
         self.category_var = ctk.StringVar()
 
         self.create_widgets()
@@ -19,11 +19,15 @@ class GameSettingsScreen(ctk.CTkFrame):
 
     def create_widgets(self):
         ctk.CTkLabel(self, text="Ustawienia Gry", font=ctk.CTkFont(size=20, weight="bold")).pack(pady=10)
-        ctk.CTkLabel(self, text="Tryb gry:").pack()
-        ctk.CTkOptionMenu(self, variable=self.mode_var, values=["classic", "timer"]).pack(pady=5)
 
-        ctk.CTkLabel(self, text="Czas (sekundy):").pack()
-        ctk.CTkEntry(self, textvariable=self.time_var).pack(pady=5)
+        ctk.CTkLabel(self, text="Tryb gry:").pack()
+        self.mode_menu = ctk.CTkOptionMenu(self, variable=self.mode_var, values=["classic", "timer"], command=self.toggle_time_option)
+        self.mode_menu.pack(pady=5)
+
+        self.time_label = ctk.CTkLabel(self, text="Czas (sekundy):")
+        self.time_label.pack()
+        self.time_menu = ctk.CTkOptionMenu(self, variable=self.time_var, values=["30", "60"])
+        self.time_menu.pack(pady=5)
 
         ctk.CTkLabel(self, text="Kategoria:").pack()
         self.category_menu = ctk.CTkOptionMenu(self, variable=self.category_var, values=[])
@@ -31,6 +35,16 @@ class GameSettingsScreen(ctk.CTkFrame):
 
         ctk.CTkButton(self, text="Rozpocznij grę", command=self.start_game).pack(pady=20)
         ctk.CTkButton(self, text="Powrót", command=self.go_back).pack()
+
+        self.toggle_time_option(self.mode_var.get())  # Hide/show time at start
+
+    def toggle_time_option(self, selected_mode):
+        if selected_mode == "timer":
+            self.time_label.pack(pady=0)
+            self.time_menu.pack(pady=5)
+        else:
+            self.time_label.pack_forget()
+            self.time_menu.pack_forget()
 
     def load_categories(self):
         session = SessionLocal()

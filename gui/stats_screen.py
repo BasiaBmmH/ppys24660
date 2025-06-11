@@ -1,6 +1,6 @@
 import customtkinter as ctk
 from models.database import SessionLocal
-from models import player
+from models import player, statistics
 
 class StatsScreen(ctk.CTkFrame):
     def __init__(self, master, username):
