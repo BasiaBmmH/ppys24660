@@ -37,6 +37,7 @@ class GameScreen(ctk.CTkFrame):
         self.remaining_attempts = self.max_attempts
         self.timer_thread = None
         self.remaining_time = self.time_limit
+        self.final_result = None
 
         self.create_widgets()
 
@@ -91,6 +92,7 @@ class GameScreen(ctk.CTkFrame):
             if not self.is_game_over():
                 self.status.configure(text="Czas minął! Koniec gry.")
                 self.entry.configure(state="disabled")
+                self.final_result = 0
                 self.update_statistics(won=False)
 
         self.timer_thread = threading.Thread(target=countdown, daemon=True)
@@ -138,10 +140,12 @@ class GameScreen(ctk.CTkFrame):
             self.status.configure(text=f"Gratulacje! Odgadłeś hasło: {self.word}")
             self.entry.configure(state="disabled")
             self.update_statistics(won=True)
+            self.final_result = 1
         elif self.remaining_attempts <= 0:
             self.status.configure(text=f"Przegrałeś! Hasło to: {self.word}")
             self.entry.configure(state="disabled")
             self.update_statistics(won=False)
+            self.final_result = 0
 
     def is_game_over(self):
         return self.entry.cget("state") == "disabled"
