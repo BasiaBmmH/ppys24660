@@ -6,6 +6,6 @@ from models import player, statistics, category, word
 Base.metadata.create_all(bind=engine)
 
 app = CTk()
-app.geometry("400x400")
+app.geometry("400x500")
 LoginScreen(app)
 app.mainloop()
