@@ -20,6 +20,7 @@ class StatsScreen(ctk.CTkFrame):
         if stats:
             ctk.CTkLabel(self, text=f"Liczba gier: {stats.games_played}").pack(pady=5)
             ctk.CTkLabel(self, text=f"Wygrane gry: {stats.games_won}").pack(pady=5)
+            ctk.CTkLabel(self, text=f"Punkty: {stats.points}").pack(pady=5)
         else:
             ctk.CTkLabel(self, text="Brak danych statystycznych.").pack(pady=5)
 
