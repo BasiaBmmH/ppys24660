@@ -151,8 +151,8 @@ class GameScreen(ctk.CTkFrame):
         return self.entry.cget("state") == "disabled"
 
     def update_statistics(self, won):
-        if self.is_game_over():
-            return
+        # if self.is_game_over():
+        #     return
 
         session = SessionLocal()
 
@@ -170,6 +170,13 @@ class GameScreen(ctk.CTkFrame):
             game_stat = GameStats(player_id=player_instance.id, score=score, result=result)
             session.add(game_stat)
             session.commit()
+
+        stats = player_instance.statistics
+        if stats:
+            stats.games_played += 1
+            if won:
+                stats.games_won += 1
+            stats.points += score
 
         session.close()
 
